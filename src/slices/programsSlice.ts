@@ -1,4 +1,3 @@
-// src/slices/programsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppDispatch } from '../store';
 import { createClient } from '@supabase/supabase-js';
@@ -20,11 +19,11 @@ interface Program {
   
   interface DayProgress {
     id: number;
-    programid: number;  // Include programid in the interface
+    programid: number; 
     name: string;
-    actiondate: string; // or Date if you prefer
+    actiondate: string; 
     maxreps: number;
-    userdayprogress: UserDayProgress | null; // Single object or null
+    userdayprogress: UserDayProgress | null; 
   }
   
   

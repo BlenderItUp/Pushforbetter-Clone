@@ -14,14 +14,16 @@ const calculateStrokeDashoffset = (current: number = 0, max: number = 0): number
     return circumference - (current / max) * circumference;
 };
 
-const TopBar: React.FC<TopBarProps> = ({ selectedItemIndex, onItemClick }) => {
+const TopBar: React.FC<TopBarProps> = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { currentProgramId } = useSelector((state: RootState) => state.settings);
     const userPrograms = useSelector((state: RootState) => state.programs.userPrograms);
     const program = userPrograms[currentProgramId];
 
+    const seletectedDay = useSelector((state: RootState) => state.settings.currentDayId);
+
     if (!program) {
-        return <div>Loading...</div>; // Or handle the case when the program is not yet loaded
+        return <div>Loading...</div>; 
     }
 
     return (
@@ -30,10 +32,9 @@ const TopBar: React.FC<TopBarProps> = ({ selectedItemIndex, onItemClick }) => {
                 {program.days.map((item, index) => (
                     <div 
                         key={item.id} 
-                        className={`item ${index === selectedItemIndex ? 'selected' : ''}`} 
+                        className={`item ${index === seletectedDay ? 'selected' : ''}`} 
                         onClick={() => {
-                            onItemClick(index);
-                            dispatch(setCurrentDayId(item.id)); // Update the current program ID in the store
+                            dispatch(setCurrentDayId(item.id)); 
                         }}
                     >
                         <svg width="40" height="40" viewBox="0 0 40 40">

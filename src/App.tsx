@@ -6,20 +6,10 @@ import { useDispatch } from 'react-redux';
 import { initializeSettings } from './slices/settingsSlice';
 
 import Layout from './pages/Layout';
-import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 
 
 import Dashboard from './components/Dashboard';
-// const App: React.FC = () => {
-//   return (
-//     <div className="App">
-//       <Dashboard></Dashboard>
-//     </div>
-//   );
-// }
-// src/App.tsx
-
 
 const App: React.FC = () => {
   const dispatch = useDispatch();

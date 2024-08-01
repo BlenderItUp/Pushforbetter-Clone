@@ -7,7 +7,7 @@ const store = configureStore({
   reducer: {
     user: userReducer,
     programs: programsReducer,
-    settings: settingsReducer, // Add settings slice here
+    settings: settingsReducer,
   },
 });
 

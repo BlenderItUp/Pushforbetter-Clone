@@ -13,7 +13,7 @@ interface SettingsState {
 
 const initialState: SettingsState = {
   currentProgramId: 1, 
-  currentDayId: 0, // Default to 0 or any placeholder
+  currentDayId: 0,
 };
 
 const settingsSlice = createSlice({
@@ -52,9 +52,6 @@ export const initializeSettings = () => async (dispatch: AppDispatch) => {
     if (days.length > 0) {
       dispatch(setCurrentDayId(days[0].id));
     }
-
-    // Optionally, you can set other initial settings here
-    // dispatch(setSettings({ currentProgramId: 1, currentDayId: days[0]?.id || 0 }));
 
   } catch (error: any) {
     console.error("Failed to initialize settings:", error.message);
