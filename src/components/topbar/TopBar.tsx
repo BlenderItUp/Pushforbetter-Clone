@@ -4,17 +4,13 @@ import { RootState, AppDispatch } from '../../store';
 import { setCurrentDayId } from '../../slices/settingsSlice';
 import './TopBar.css';
 
-interface TopBarProps {
-    selectedItemIndex: number;
-    onItemClick: (index: number) => void;
-}
 
 const calculateStrokeDashoffset = (current: number = 0, max: number = 0): number => {
     const circumference = 2 * Math.PI * 15; // Radius of the circle is 15
     return circumference - (current / max) * circumference;
 };
 
-const TopBar: React.FC<TopBarProps> = () => {
+const TopBar: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { currentProgramId } = useSelector((state: RootState) => state.settings);
     const userPrograms = useSelector((state: RootState) => state.programs.userPrograms);
@@ -26,13 +22,14 @@ const TopBar: React.FC<TopBarProps> = () => {
         return <div>Loading...</div>; 
     }
 
+
     return (
         <div className="top-bar">
             <div className="scroll-container">
                 {program.days.map((item, index) => (
                     <div 
                         key={item.id} 
-                        className={`item ${index === seletectedDay ? 'selected' : ''}`} 
+                        className={`item ${item.id === seletectedDay ? 'selected' : ''}`} 
                         onClick={() => {
                             dispatch(setCurrentDayId(item.id)); 
                         }}

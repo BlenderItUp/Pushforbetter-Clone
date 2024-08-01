@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { User } from '../types';
-import { AppDispatch } from '../store';
+import { AppDispatch, RootState } from '../store';
 import { createClient } from '@supabase/supabase-js';
 import { fetchAllPrograms, fetchUserPrograms } from './programsSlice';
 
@@ -12,6 +12,18 @@ interface UserState {
   user: User | null;
   error: string | null;
 }
+
+const loadUserFromLocalStorage = (): User | null => {
+  const userJson = localStorage.getItem('user');
+  if (userJson) {
+    try {
+      return JSON.parse(userJson);
+    } catch {
+      localStorage.removeItem('user');
+    }
+  }
+  return null;
+};
 
 const initialState: UserState = {
   user: null,
@@ -38,6 +50,18 @@ const userSlice = createSlice({
 
 export const { setUser, clearUser, setError } = userSlice.actions;
 
+export const loadUser = createAsyncThunk<void, void, { dispatch: AppDispatch; state: RootState }>(
+  'user/loadUser',
+  async (_, { dispatch }) => {
+    const user = loadUserFromLocalStorage();
+    if (user) {
+      dispatch(setUser(user));
+      dispatch(fetchAllPrograms());
+      dispatch(fetchUserPrograms(user.id));
+    }
+  }
+);
+
 export const loginUser = (name: string) => async (dispatch: AppDispatch) => {
   try {
     const { data, error } = await supabase
@@ -52,8 +76,8 @@ export const loginUser = (name: string) => async (dispatch: AppDispatch) => {
 
     if (data) {
       dispatch(setUser(data));
-      dispatch(fetchAllPrograms())
-      dispatch(fetchUserPrograms(data.id)); 
+      dispatch(fetchAllPrograms());
+      dispatch(fetchUserPrograms(data.id));
     }
 
     dispatch(setError(null));
@@ -75,8 +99,8 @@ export const createUser = (name: string) => async (dispatch: AppDispatch) => {
 
     if (data) {
       dispatch(setUser(data));
-      dispatch(fetchAllPrograms())
-      dispatch(fetchUserPrograms(data.id)); 
+      dispatch(fetchAllPrograms());
+      dispatch(fetchUserPrograms(data.id));
     }
 
     dispatch(setError(null));
