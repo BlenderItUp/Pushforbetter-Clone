@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../types';
 import { AppDispatch } from '../store';
 import { createClient } from '@supabase/supabase-js';
+import { fetchAllPrograms, fetchUserPrograms } from './programsSlice'; // Import the fetchUserPrograms action
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY as string;
@@ -50,7 +51,12 @@ export const loginUser = (name: string) => async (dispatch: AppDispatch) => {
       throw new Error(error.message);
     }
 
-    dispatch(setUser(data));
+    if (data) {
+      dispatch(setUser(data));
+      dispatch(fetchAllPrograms())
+      dispatch(fetchUserPrograms(data.id)); // Dispatch fetchUserPrograms with the user ID
+    }
+
     dispatch(setError(null));
   } catch (error: any) {
     dispatch(setError(error.message));
@@ -68,7 +74,11 @@ export const createUser = (name: string) => async (dispatch: AppDispatch) => {
       throw new Error(error.message);
     }
 
-    dispatch(setUser(data));
+    if (data) {
+      dispatch(setUser(data));
+    //   dispatch(fetchUserPrograms(data.id)); // Dispatch fetchUserPrograms with the user ID
+    }
+
     dispatch(setError(null));
   } catch (error: any) {
     dispatch(setError(error.message));
