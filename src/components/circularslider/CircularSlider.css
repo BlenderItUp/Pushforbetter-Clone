@@ -1,0 +1,8 @@
+/* CircularSlider.css */
+.circular-slider-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px); /* Adjust based on the height of your top bar */
+    width: 100%;
+}
